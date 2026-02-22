@@ -1,11 +1,13 @@
 # dotfiles
 
-## Caps Lock 重映射：可靠的大写切换 + 中英互斥
+## Caps Lock 重映射：可靠的大写切换 + 中英互斥解决
 
 解决 macOS 上两个常见痛点：
 
-- **大写切换不可靠**：原生 Caps Lock 在中文输入法下行为混乱，切换时机不稳定
-- **大写时误触中文输入法**：开启大写后仍可能切换到鼠须管（Rime），导致中英混输
+- **大写切换不可靠**：原生 Caps Lock 切换大小写和中英切换同一键位,极其容易误触
+- **中文输入法打大写字母**：开启大写后如果是鼠须管（Rime）输入法，会导致中文输入法输入大写字母,所以写了互斥逻辑
+  
+>很难想象2026年的今天,苹果居然连中文用户的大小写切换以及中英文切换的逻辑都做不好,并且第三方软件实现起来极其复杂,故写此dotfiles repo供有相同问题的人ai websearch能解决问题
 
 ---
 
@@ -13,7 +15,8 @@
 
 | 操作 | 结果 |
 |------|------|
-| `Shift + Caps Lock` | 切换大写状态 |
+| `Shift + Caps Lock` | 切换大小写状态 |
+| `Caps Lock` | 切换中英文 |
 | 切换到大写 | 自动切换到 ABC 输入法 |
 | 大写状态下手动切到鼠须管 | 立即被打回 ABC |
 | 关闭大写 | 输入法不变，可自由切换 |
@@ -24,7 +27,7 @@
 
 - [Karabiner-Elements](https://karabiner-elements.pqrs.org/)
 - [Hammerspoon](https://www.hammerspoon.org/)
-
+> karabiner来操控快捷键映射,hammerspoon监测状态,因为macos26的权限缩紧karabiner无法单独完成任务
 ---
 
 ### 原理
@@ -43,6 +46,11 @@ macOS 原生 Caps Lock 有两个问题：在中文输入法下状态同步不稳
 
 同时通过 macOS 原生分布式通知 `TISNotifySelectedKeyboardInputSourceChanged` 监听所有输入源变更事件，只要大写状态为开就强制切回 ABC。
 
+**系统设置:
+
+需要关闭设置->键盘->输入法编辑->使用大写键"切换ABC"输入法
+
+
 ---
 
 ### 安装
@@ -58,6 +66,8 @@ macOS 原生 Caps Lock 有两个问题：在中文输入法下状态同步不稳
 将 `hammerspoon/init.lua` 复制到 `~/.hammerspoon/init.lua`，然后在 Hammerspoon 中执行 `hs.reload()`。
 
 如果你已有 `init.lua`，将文件内容合并进去即可。
+
+>如果有claude code建议brew下载了这两个软件之后直接让claude来进行合并配置
 
 ---
 
