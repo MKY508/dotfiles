@@ -1,0 +1,9 @@
+{
+    "description": "Shift + Caps Lock -> F19（触发 Hammerspoon 大写切换）",
+    "from": {
+        "key_code": "caps_lock",
+        "modifiers": { "mandatory": ["shift"] }
+    },
+    "to": [{ "key_code": "f19", "modifiers": ["left_shift"] }],
+    "type": "basic"
+}
